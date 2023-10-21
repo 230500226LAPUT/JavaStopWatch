@@ -14,47 +14,59 @@ import javax.swing.Timer;
  *
  * @author sniffel
  */
+// This class extends javax.swing.JFrame and implements ActionListener to handle events.
 public class MainFrame extends javax.swing.JFrame implements ActionListener {
 
+    // These variables are used to keep track of the elapsed time.
     int elapsedTime = 0;
     int seconds = 0;
     int minutes = 0;
     int hours = 0;
     boolean active = false;
-   
+
+    // These strings are used to format the time display.
     String secondsString = String.format("%02d", seconds);
     String minutesString = String.format("%02d", minutes);
     String hoursString = String.format("%02d", hours);
 
+    // This is a timer that fires an action event every second.
     Timer timer = new Timer(1000, new ActionListener(){
         public void actionPerformed(ActionEvent e){
+            // Every time the timer fires, we add 1000 to the elapsed time.
             elapsedTime += 1000;
+            // We calculate the hours, minutes, and seconds from the elapsed time.
             hours = (elapsedTime/3600000);
             minutes = (elapsedTime/60000) % 60;
             seconds = (elapsedTime / 1000) % 60; 
 
+            // We format the time strings again because the time has changed.
             secondsString = String.format("%02d", seconds);
             minutesString = String.format("%02d", minutes);
             hoursString = String.format("%02d", hours);
 
+            // We update the label with the new time.
             lblTime.setText(hoursString+ ":" + minutesString+ ":" +secondsString);
         }
     }); 
 
+    // This is the constructor for MainFrame. It initializes the components of the frame.
     public MainFrame() {
         initComponents();
         
     }
 
+    // This method starts the timer.
     void start() {
         timer.start(); 
 
     }
 
+    // This method stops the timer.
     void stop(){
         timer.stop();
     }
 
+    // This method resets the timer and all related variables and updates the label.
     void reset(){
         timer.stop();
         elapsedTime = 0;
@@ -67,6 +79,7 @@ public class MainFrame extends javax.swing.JFrame implements ActionListener {
         
         lblTime.setText(hoursString+ ":" + minutesString+ ":" +secondsString);
     }
+
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -138,29 +151,33 @@ public class MainFrame extends javax.swing.JFrame implements ActionListener {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnStartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStartActionPerformed
-            if (active == false){
-                active = true;
-                btnStart.setText("STOP");
-                start();
-            } else {
-                active = false;
-                btnStart.setText("START");
-                stop();
-            }
-    }//GEN-LAST:event_btnStartActionPerformed
-
-    private void btnStartStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_btnStartStateChanged
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnStartStateChanged
-
-    private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetActionPerformed
+// This method is called when the Start button is clicked.
+private void btnStartActionPerformed(java.awt.event.ActionEvent evt) {
+    // If the stopwatch is not active, we start it and change the button text to "STOP".
+    if (active == false){
+        active = true;
+        btnStart.setText("STOP");
+        start();
+    } else {
+        // If the stopwatch is already active, we stop it and change the button text to "START".
         active = false;
-
         btnStart.setText("START");
+        stop();
+    }
+}
 
-        reset();
-    }//GEN-LAST:event_btnResetActionPerformed
+private void btnStartStateChanged(javax.swing.event.ChangeEvent evt) {
+    // TODO add your handling code here:
+}
+
+// This method is called when the Reset button is clicked.
+private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {
+    // We stop the stopwatch, change the Start button text back to "START", and reset the stopwatch.
+    active = false;
+    btnStart.setText("START");
+    reset();
+}
+
 
     /**
      * @param args the command line arguments
